@@ -24,7 +24,10 @@ jobs:
     - name: Publish
       run: dotnet publish src/AspNetApp -c Release -o published
     - name: Build image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      run: |
+        IMAGE_NAME=asp-net-app
+        docker build . --file Dockerfile --tag $IMAGE_NAME
+
     - name: Log into registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
@@ -32,12 +35,16 @@ jobs:
       run: |
         IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
+        # Change all uppercase to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
+        # Strip git ref prefix from version
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
+        # Strip "v" prefix from tag name
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
+        # Use Docker `latest` tag convention
         [ "$VERSION" == "master" ] && VERSION=latest
 
         echo IMAGE_ID=$IMAGE_ID
