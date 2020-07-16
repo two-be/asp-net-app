@@ -21,5 +21,5 @@ jobs:
       run: dotnet restore src/AspNetApp
     - name: Build
       run: dotnet build src/AspNetApp --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: Publish
+      run: dotnet publish src/AspNetApp -c Release -o ../../published
