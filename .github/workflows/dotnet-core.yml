@@ -22,6 +22,6 @@ jobs:
     - name: Build
       run: dotnet build src/AspNetApp --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish src/AspNetApp -c Release -o ../../published
+      run: dotnet publish src/AspNetApp -c Release -o published
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag asp-net-app:$(date +%s)
