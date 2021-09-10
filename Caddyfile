@@ -1,0 +1,3 @@
+asp.demosoft.me {
+    reverse_proxy asp-net-app:80
+}

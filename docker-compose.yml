@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+
+  asp-net-app:
+    image: "ghcr.io/twologician/asp-net-app:latest"
+    volumes:
+      - "asp-net-app:/app"
+
+  caddy:
+    image: "caddy"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./Caddyfile:/etc/caddy/Caddyfile"
+      - "caddy_data:/data"
+
+volumes:
+  asp-net-app:
+  caddy_data:
